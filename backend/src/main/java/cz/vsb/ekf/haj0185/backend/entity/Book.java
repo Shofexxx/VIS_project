@@ -7,24 +7,39 @@ import jakarta.persistence.*;
 public class Book {
 
    @Id
-   @GeneratedValue
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    @Column(name="IDBooks")
    private int idBook;
+
    @Column(name="Name")
    private String name;
+
    @Column(name="ISBN")
+
    private String isbn;
    @Column(name="Quantity")
    private int quantity;
 
+   @Column(name = "AuthorID")
+   private int authorId;
+
     public Book() {
     }
 
-    public Book(int idBook, String name, String isbn, int quantity) {
+    public Book(int idBook, String name, String isbn, int quantity, int authorId) {
         this.idBook = idBook;
         this.name = name;
         this.isbn = isbn;
         this.quantity = quantity;
+        this.authorId = authorId;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
     public int getIdBook() {
@@ -66,6 +81,7 @@ public class Book {
                 ", name='" + name + '\'' +
                 ", isbn='" + isbn + '\'' +
                 ", quantity=" + quantity +
+                ", authorId=" + authorId +
                 '}';
     }
 }
