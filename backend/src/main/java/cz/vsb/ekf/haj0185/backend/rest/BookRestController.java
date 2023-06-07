@@ -61,4 +61,15 @@ public class BookRestController {
 
         return "Smazána knížka id - " +bookId;
     }
+
+    @GetMapping("/books/search/{keyword}")
+    public List<Book> findBookByName(@PathVariable("keyword") String keyword){
+       List<Book> book = bookService.findBookByName(keyword);
+        if(book == null || book.isEmpty()){
+            throw new RuntimeException("Kniha nenalezena - " + keyword);
+        }
+
+        return book;
+    }
+
 }
