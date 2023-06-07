@@ -3,7 +3,7 @@ package cz.vsb.ekf.haj0185.backend.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Books")
+@Table(name="books")
 public class Book {
 
    @Id
