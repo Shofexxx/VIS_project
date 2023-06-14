@@ -49,11 +49,11 @@ const BasketComponent = () => {
         {basketItems.length === 0 ? (
           <p>Your basket is empty.</p>
         ) : (
-          <ul className="mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {basketItems.map((item) => (
-              <li key={item.idBook} className="text-gray-500 mb-4">
-                <h3 className="text-lg font-semibold">{item.name}</h3>
-                <p>Author: {item.author}</p>
+              <div key={item.idBook} className="bg-white rounded shadow p-4">
+                <h3 className="text-lg font-bold mb-2">{item.name}</h3>
+                <p>Author: {item.author.name + ' ' + item.author.surname}</p>
                 <p>ISBN: {item.isbn}</p>
                 <button
                   className="bg-red-500 text-white py-1 px-2 rounded-md mt-2"
@@ -61,12 +61,12 @@ const BasketComponent = () => {
                 >
                   Delete
                 </button>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
         <button
-          className="bg-blue-500 text-white py-2 px-4 rounded-md"
+          className="bg-blue-500 text-white py-2 px-4 rounded-md mt-4"
           onClick={() => clearBasket()}
         >
           Clear Basket

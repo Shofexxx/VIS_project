@@ -35,7 +35,7 @@ const ListBookComponent = () =>{
                   <td>{book.name}</td>
                   <td>{book.isbn}</td>
                   <td>{book.quantity}</td>
-                  <td>{book.authorId}</td>
+                  <td>{book.author.name}</td>
                 </tr>
               ))}
             </tbody>

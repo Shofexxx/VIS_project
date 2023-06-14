@@ -1,14 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../AuthContext';
-import { BASE_URL } from "../../config/apiConfig";
+import { BASE_URL } from '../../config/apiConfig';
 
 const AddBook = () => {
   const { isAuthenticated, credentials } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [isbn, setIsbn] = useState('');
+  const [price, setPrice] = useState(0.0);
   const [quantity, setQuantity] = useState('');
-  const [authorId, setAuthorId] = useState('');
+  const [author, setAuthor] = useState({
+    idAuthor: '',
+    name: '',
+    surname: '',
+  });
   const [authors, setAuthors] = useState([]);
   const [showAddAuthorForm, setShowAddAuthorForm] = useState(false);
   const [newAuthorName, setNewAuthorName] = useState('');
@@ -35,10 +40,12 @@ const AddBook = () => {
     e.preventDefault();
 
     const bookData = {
+      idBook: '',
       name: name,
       isbn: isbn,
+      price: price,
       quantity: quantity,
-      authorId: authorId,
+      author: author,
     };
 
     try {
@@ -53,8 +60,13 @@ const AddBook = () => {
         // Reset form fields
         setName('');
         setIsbn('');
+        setPrice('');
         setQuantity('');
-        setAuthorId('');
+        setAuthor({
+          idAuthor: '',
+          name: '',
+          surname: '',
+        });
       } else {
         console.log('Failed to add book.');
       }
@@ -68,7 +80,10 @@ const AddBook = () => {
     if (selectedValue === 'addAuthor') {
       setShowAddAuthorForm(true);
     } else {
-      setAuthorId(selectedValue);
+      setAuthor((prevAuthor) => ({
+        ...prevAuthor,
+        idAuthor: selectedValue,
+      }));
     }
   };
 
@@ -90,7 +105,11 @@ const AddBook = () => {
       if (response.status === 200) {
         console.log('Author added successfully.');
         setAuthors([...authors, response.data]);
-        setAuthorId(response.data.idAuthor);
+        setAuthor({
+          idAuthor: response.data.idAuthor,
+          name: response.data.name,
+          surname: response.data.surname,
+        });
         setNewAuthorName('');
         setNewAuthorSurname('');
         setShowAddAuthorForm(false);
@@ -134,6 +153,17 @@ const AddBook = () => {
         </div>
         <div className="mb-4">
           <label className="block mb-2">
+            Cena:
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(parseFloat(e.target.value))}
+              className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+          </label>
+        </div>
+        <div className="mb-4">
+          <label className="block mb-2">
             Počet:
             <input
               type="number"
@@ -147,7 +177,7 @@ const AddBook = () => {
           <label className="block mb-2">
             Author:
             <select
-              value={authorId}
+              value={author.idAuthor}
               onChange={handleAuthorSelection}
               className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             >
