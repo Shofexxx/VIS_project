@@ -9,10 +9,13 @@ import './css/index.css';
 import Header from './component/Header'
 import AddBook from './component/admin/AddBook';
 import BookDetails from './component/BookDetailsComponent';
+import { BasketProvider } from './component/BasketContext';
+import BasketComponent from './component/BasketComponent';
 
 function App() {
   return (
     <AuthProvider>
+      <BasketProvider>
       <BrowserRouter>
       <Header />
         <Routes>
@@ -22,8 +25,10 @@ function App() {
           <Route path="/admin" element={<AdminComponent />} />
           <Route exact path="/admin/add-book" element={<AddBook />} />
           <Route path="/books/:bookId" element={<BookDetails />} />
+          <Route path="/basket" element={<BasketComponent />} />
         </Routes>
       </BrowserRouter>
+      </BasketProvider>
     </AuthProvider>
   );
 }

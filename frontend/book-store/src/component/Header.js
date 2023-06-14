@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { AuthContext } from './AuthContext';
+import { Link } from 'react-router-dom';
+
 
 const Header = () => {
   const { isAuthenticated, logout, userRole } = useContext(AuthContext);
@@ -31,6 +33,9 @@ const Header = () => {
               </a>
             )}
           </div>
+          <li>
+            <Link to="/basket">Basket</Link>
+          </li>
         </nav>
       </div>
     </header>

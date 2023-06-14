@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { BASE_URL } from "../config/apiConfig";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BASE_URL } from '../config/apiConfig';
+import { useParams } from 'react-router-dom';
+import BasketService from '../service/BasketService';
 
 const BookDetailsComponent = () => {
   const { bookId } = useParams();
   const [book, setBook] = useState(null);
 
-  
   useEffect(() => {
     fetchBook();
-  });
-  
+  }, []);
+
   const fetchBook = () => {
     axios
       .get(`${BASE_URL}/api/books/${bookId}`)
@@ -20,10 +20,22 @@ const BookDetailsComponent = () => {
         setBook(data);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error('Error:', error);
       });
   };
 
+  const handlePurchase = () => {
+    console.log('Purchase button clicked');
+    if (book) {
+      BasketService.addToBasket(book)
+        .then((response) => {
+          console.log('Item added to basket:', book);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+  };
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -33,7 +45,10 @@ const BookDetailsComponent = () => {
           <p className="text-gray-500 mb-4">ISBN: {book.isbn}</p>
           <p className="text-gray-500 mb-4">Quantity: {book.quantity}</p>
           {/* Add additional book details */}
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md">
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded-md"
+            onClick={handlePurchase}
+          >
             Purchase
           </button>
         </div>
