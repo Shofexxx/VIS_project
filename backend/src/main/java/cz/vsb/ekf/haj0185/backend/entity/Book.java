@@ -15,31 +15,29 @@ public class Book {
    private String name;
 
    @Column(name="ISBN")
-
    private String isbn;
+
+   @Column(name="Price")
+   private double price;
    @Column(name="Quantity")
    private int quantity;
 
-   @Column(name = "AuthorID")
-   private int authorId;
-
+   @Column(name="Sales")
+   private int sales;
+    @ManyToOne
+    @JoinColumn(name="AuthorID", nullable=false)
+    private Author author;
     public Book() {
     }
 
-    public Book(int idBook, String name, String isbn, int quantity, int authorId) {
+    public Book(int idBook, String name, String isbn, int price, int quantity, int sales, Author author) {
         this.idBook = idBook;
         this.name = name;
         this.isbn = isbn;
+        this.price = price;
         this.quantity = quantity;
-        this.authorId = authorId;
-    }
-
-    public int getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(int authorId) {
-        this.authorId = authorId;
+        this.sales = sales;
+        this.author = author;
     }
 
     public int getIdBook() {
@@ -74,14 +72,27 @@ public class Book {
         this.quantity = quantity;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "idBook=" + idBook +
-                ", name='" + name + '\'' +
-                ", isbn='" + isbn + '\'' +
-                ", quantity=" + quantity +
-                ", authorId=" + authorId +
-                '}';
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getSales() {
+        return sales;
+    }
+
+    public void setSales(int sales) {
+        this.sales = sales;
     }
 }
