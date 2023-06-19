@@ -24,10 +24,18 @@ const AdminComponent = () => {
             <p>Click here to add a new book</p>
           </div>
         </Link>
-        <div className="p-4 border rounded shadow">
-          <h3>Other Functionality</h3>
-          <p>Other admin functionality goes here</p>
-        </div>
+        <Link to="/admin/customers">
+          <div className="p-4 border rounded shadow cursor-pointer hover:bg-gray-100">
+            <h3>Customers</h3>
+            <p>Click here to add a new book</p>
+          </div>
+        </Link>
+        <Link to="/admin/orders">
+          <div className="p-4 border rounded shadow cursor-pointer hover:bg-gray-100">
+            <h3>Objednávky</h3>
+            <p>Click here to add a new book</p>
+          </div>
+        </Link>
       </div>
       </div>
     </div>
