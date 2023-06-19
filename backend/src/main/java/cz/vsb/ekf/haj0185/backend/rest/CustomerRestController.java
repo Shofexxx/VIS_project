@@ -2,6 +2,7 @@ package cz.vsb.ekf.haj0185.backend.rest;
 
 import cz.vsb.ekf.haj0185.backend.entity.Book;
 import cz.vsb.ekf.haj0185.backend.entity.Customer;
+import cz.vsb.ekf.haj0185.backend.service.BookService;
 import cz.vsb.ekf.haj0185.backend.service.CustomerService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class CustomerRestController {
     public CustomerRestController(CustomerService customerService) {
         this.customerService = customerService;
     }
+    @Autowired
+    private BookService bookService;
 
     @GetMapping("/customers")
     public List<Customer> findAll(){
@@ -55,6 +58,13 @@ public class CustomerRestController {
     @PathVariable int customerId,
     @PathVariable int bookId
     ){
-        return customerService.assingBookToCustomer(customerId, bookId);
+        Customer customer = customerService.assingBookToCustomer(customerId, bookId);
+        
+        Book book = bookService.findById(bookId);
+        book.setQuantity(book.getQuantity() - 1);
+        book.setSales(book.getSales() + 1);
+        bookService.save(book);
+
+        return customer;
     }
 }
