@@ -41,15 +41,11 @@ const ListBookComponent = () => {
     <Link
       to={`/books/${book.idBook}`}
       key={book.idBook}
-      className="text-blue-500 hover:underline"
+      className="text-blue-500 hover:scale-105 transition-all"
     >
       <div className="bg-white rounded shadow p-4">
         
         <h3 className="text-lg font-bold mb-2">{book.name}</h3>
-        <div className="flex justify-between mb-2">
-          <span className="font-bold">Book ID:</span>
-          <span>{book.idBook}</span>
-        </div>
         <div className="flex justify-between mb-2">
           <span className="font-bold">ISBN:</span>
           <span>{book.isbn}</span>
@@ -61,6 +57,10 @@ const ListBookComponent = () => {
         <div className="flex justify-between">
           <span className="font-bold">Author:</span>
           <span>{book.author.name}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="font-bold">Cena:</span>
+          <span>{book.price}</span>
         </div>
       </div>
     </Link>
@@ -87,7 +87,7 @@ const ListBookComponent = () => {
   return (
     <div className="container mx-auto py-8">
       <SearchComponent />
-      <h2 className="text-2xl font-bold mb-4">List Books</h2>
+      <h2 className="text-2xl font-bold mb-4">Knihy</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {renderBooks}
       </div>

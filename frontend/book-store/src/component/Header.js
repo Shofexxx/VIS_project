@@ -10,7 +10,12 @@ const Header = () => {
     <header className="bg-white shadow">
       <div className="container mx-auto px-4 py-2">
         <nav className="flex items-center justify-between">
-          <div className="text-xl font-bold">Procházet</div>
+          <div className="text-xl font-bold">
+            <a href="/" className=" hover:text-blue-700">
+              Domů
+            </a>
+            </div>
+          
           <div>
             {isAuthenticated && (
               <>
