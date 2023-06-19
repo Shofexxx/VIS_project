@@ -72,4 +72,9 @@ public class BookRestController {
         return book;
     }
 
+    @GetMapping("/books/top3")
+    public List<Book> getTop3BySales(){
+        return bookService.findTop3ByOrderBySalesDesc();
+    }
+
 }

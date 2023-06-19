@@ -52,4 +52,8 @@ public class BookServiceImpl implements BookService {
     public List<Book> findBookByName(String keyword) {
         return bookRepository.findByName(keyword);
     }
+
+    public List<Book> findTop3ByOrderBySalesDesc() {
+        return bookRepository.findTop3ByOrderBySalesDesc();
+    }
 }
