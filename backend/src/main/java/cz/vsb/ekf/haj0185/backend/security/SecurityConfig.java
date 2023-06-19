@@ -27,6 +27,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/api/authors").hasRole("admin")
                         .requestMatchers(HttpMethod.GET,"/api/customers").hasRole("admin")
                         .requestMatchers(HttpMethod.DELETE,"/api/customers/*").hasRole("admin")
+                        .requestMatchers(HttpMethod.GET,"/api/orders").hasRole("admin")
                         .anyRequest().permitAll()
 
         );
