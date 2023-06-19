@@ -1,5 +1,6 @@
 package cz.vsb.ekf.haj0185.backend.rest;
 
+import cz.vsb.ekf.haj0185.backend.dto.AssignedBookDTO;
 import cz.vsb.ekf.haj0185.backend.entity.Book;
 import cz.vsb.ekf.haj0185.backend.entity.Customer;
 import cz.vsb.ekf.haj0185.backend.service.BookService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
 @RestController
 @RequestMapping("/api")
 public class CustomerRestController {
@@ -43,6 +45,30 @@ public class CustomerRestController {
 
         return customer.getAssignedBooks();
     }
+    @GetMapping("/orders")
+    public List<AssignedBookDTO> getAllAssignedBooks() {
+        List<AssignedBookDTO> assignedBooks = new ArrayList<>();
+
+        List<Customer> customers = customerService.findAll();
+        for (Customer customer : customers) {
+            for (Book book : customer.getAssignedBooks()) {
+                AssignedBookDTO assignedBookDTO = new AssignedBookDTO();
+                assignedBookDTO.setBookId(book.getIdBook());
+                assignedBookDTO.setBookName(book.getName());
+                assignedBookDTO.setCustomerId(customer.getIdCustomer());
+                assignedBookDTO.setCustomerName(customer.getName());
+                assignedBookDTO.setCustomerSurname(customer.getSurname());
+                assignedBookDTO.setCustomerEmail(customer.getEmail());
+
+                assignedBooks.add(assignedBookDTO);
+            }
+        }
+
+        return assignedBooks;
+    }
+
+
+
     @PostMapping("/customers")
     public Customer addCustomer(@RequestBody Customer customer){
         customer.setIdCustomer(0);

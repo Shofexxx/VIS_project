@@ -56,4 +56,5 @@ public class BookServiceImpl implements BookService {
     public List<Book> findTop3ByOrderBySalesDesc() {
         return bookRepository.findTop3ByOrderBySalesDesc();
     }
+
 }
