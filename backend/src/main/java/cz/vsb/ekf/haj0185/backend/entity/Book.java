@@ -1,32 +1,40 @@
 package cz.vsb.ekf.haj0185.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name="books")
+@Table(name = "books")
 public class Book {
 
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name="IDBooks")
-   private int idBook;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IDBooks")
+    private int idBook;
 
-   @Column(name="Name")
-   private String name;
+    @Column(name = "Name")
+    private String name;
 
-   @Column(name="ISBN")
-   private String isbn;
+    @Column(name = "ISBN")
+    private String isbn;
 
-   @Column(name="Price")
-   private double price;
-   @Column(name="Quantity")
-   private int quantity;
+    @Column(name = "Price")
+    private double price;
+    @Column(name = "Quantity")
+    private int quantity;
 
-   @Column(name="Sales")
-   private int sales;
+    @Column(name = "Sales")
+    private int sales;
     @ManyToOne
-    @JoinColumn(name="AuthorID", nullable=false)
+    @JoinColumn(name = "AuthorID", nullable = false)
     private Author author;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "assignedBooks")
+    private Set<Customer> customers = new HashSet<>();
     public Book() {
     }
 
@@ -39,6 +47,7 @@ public class Book {
         this.sales = sales;
         this.author = author;
     }
+
 
     public int getIdBook() {
         return idBook;
@@ -94,5 +103,13 @@ public class Book {
 
     public void setSales(int sales) {
         this.sales = sales;
+    }
+
+    public Set<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(Set<Customer> customers) {
+        this.customers = customers;
     }
 }

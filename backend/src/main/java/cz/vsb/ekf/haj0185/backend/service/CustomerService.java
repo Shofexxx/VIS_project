@@ -13,4 +13,5 @@ public interface CustomerService {
 
     void deleteById(int theId);
 
+    Customer assingBookToCustomer(int customerId, int bookId);
 }

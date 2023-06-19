@@ -2,6 +2,8 @@ package cz.vsb.ekf.haj0185.backend.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
 @Entity
 @Table(name="customer")
 public class Customer {
@@ -18,6 +20,13 @@ public class Customer {
 
     @Column(name="Email")
     private String email;
+
+    @ManyToMany
+    @JoinTable(name = "booksold",
+            joinColumns = @JoinColumn(name ="IDCustomer"),
+            inverseJoinColumns = @JoinColumn(name= "IDBooks")
+    )
+    private Set<Book> assignedBooks = new HashSet<>();
 
     public Customer() {
     }
@@ -59,5 +68,13 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Book> getAssignedBooks() {
+        return assignedBooks;
+    }
+
+    public void setAssignedBooks(Set<Book> assignedBooks) {
+        this.assignedBooks = assignedBooks;
     }
 }
