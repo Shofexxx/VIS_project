@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { AuthContext } from './AuthContext';
 import { Link } from 'react-router-dom';
 
-
 const Header = () => {
   const { isAuthenticated, logout, userRole } = useContext(AuthContext);
 
@@ -11,18 +10,18 @@ const Header = () => {
       <div className="container mx-auto px-4 py-2">
         <nav className="flex items-center justify-between">
           <div className="text-xl font-bold">
-            <a href="/" className=" hover:text-blue-700">
+            <Link to="/" className="hover:text-blue-700">
               Domů
-            </a>
-            </div>
+            </Link>
+          </div>
           
           <div>
             {isAuthenticated && (
               <>
                 {userRole === 'admin' && (
-                  <a href="/admin" className="text-blue-500 hover:text-blue-700">
+                  <Link to="/admin" className="text-blue-500 hover:text-blue-700">
                     Administration
-                  </a>
+                  </Link>
                 )}
                 <button
                   onClick={logout}
@@ -33,9 +32,9 @@ const Header = () => {
               </>
             )}
             {!isAuthenticated && (
-              <a href="/login" className="text-blue-500 hover:text-blue-700">
+              <Link to="/login" className="text-blue-500 hover:text-blue-700">
                 Login
-              </a>
+              </Link>
             )}
           </div>
           <li>
