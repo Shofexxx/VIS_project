@@ -4,7 +4,6 @@ import cz.vsb.ekf.haj0185.backend.entity.Book;
 import cz.vsb.ekf.haj0185.backend.entity.Customer;
 import cz.vsb.ekf.haj0185.backend.service.BookService;
 import cz.vsb.ekf.haj0185.backend.service.CustomerService;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,12 +58,25 @@ public class CustomerRestController {
     @PathVariable int bookId
     ){
         Customer customer = customerService.assingBookToCustomer(customerId, bookId);
-        
+
         Book book = bookService.findById(bookId);
         book.setQuantity(book.getQuantity() - 1);
         book.setSales(book.getSales() + 1);
         bookService.save(book);
 
         return customer;
+    }
+
+    @DeleteMapping("/customers/{customerId}")
+    public String deleteCustomer(@PathVariable int customerId){
+        Customer customer = customerService.findById(customerId);
+
+        if(customer == null){
+            throw new RuntimeException("Id zákazníka nenalezeno" +customerId);
+        }
+
+        customerService.deleteById(customerId);
+
+        return "Zákazník smazán: " +customerId;
     }
 }
