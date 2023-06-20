@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import BasketService from '../service/BasketService';
 import axios from 'axios';
 import { UserContext } from './UserContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const api = axios.create({
   baseURL: 'http://localhost:8080',
@@ -14,16 +16,17 @@ const BasketComponent = () => {
     surname: '',
     email: '',
   });
+  const [validationErrors, setValidationErrors] = useState({});
 
-  const userId = useContext(UserContext); // Retrieve userId from the UserContext
+  const userId = useContext(UserContext);
 
   useEffect(() => {
     fetchBasketItems();
-  }, [userId]); // Trigger fetchBasketItems whenever userId changes
+  }, [userId]);
 
   const fetchBasketItems = async () => {
     try {
-      const response = await BasketService.getBasketItems(userId); // Retrieve basket items based on userId
+      const response = await BasketService.getBasketItems(userId);
       setBasketItems(response.data);
     } catch (error) {
       console.error('Error fetching basket items:', error);
@@ -44,8 +47,9 @@ const BasketComponent = () => {
 
   const clearBasket = async () => {
     try {
-      await BasketService.clearBasket(userId); // Pass userId to clearBasket method
+      await BasketService.clearBasket(userId);
       setBasketItems([]);
+      toast.success('Košík smazán.');
     } catch (error) {
       console.error('Error clearing the basket:', error);
     }
@@ -57,6 +61,23 @@ const BasketComponent = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const validateInputs = () => {
+    const errors = {};
+
+    if (customerData.name.trim() === '') {
+      errors.name = 'Vyplňte prosím jméno.';
+    }
+    if (customerData.surname.trim() === '') {
+      errors.surname = 'Vyplňte prosím příjmení.';
+    }
+    if (customerData.email.trim() === '') {
+      errors.email = 'Vyplňte prosím email.';
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const addCustomer = async (customerData) => {
@@ -81,6 +102,12 @@ const BasketComponent = () => {
 
   const purchaseBooks = async () => {
     try {
+      const isValid = validateInputs();
+
+      if (!isValid) {
+        return;
+      }
+
       const customerResponse = await addCustomer(customerData);
       const customerId = customerResponse.idCustomer;
 
@@ -96,18 +123,18 @@ const BasketComponent = () => {
         surname: '',
         email: '',
       });
+
+      toast.success('Úspěšně zakoupeno.');
     } catch (error) {
       console.error('Error purchasing books:', error);
     }
   };
 
-  const totalPrice = basketItems.reduce(
-    (total, item) => total + item.price,
-    0
-  );
+  const totalPrice = basketItems.reduce((total, item) => total + item.price, 0);
 
   return (
     <div className="flex justify-center items-center h-screen">
+      <ToastContainer position="bottom-right" />
       <div className="max-w-3xl bg-white p-8 shadow rounded-lg w-5/6 h-auto">
         <h2 className="text-2xl font-semibold mb-4">Váš košík</h2>
         {basketItems.length === 0 ? (
@@ -134,43 +161,58 @@ const BasketComponent = () => {
         <h2 className="text-2xl font-semibold mt-6">Informace o zákazníkovi</h2>
         <div className="flex flex-col mt-4 space-y-4">
           <div className="flex items-center">
-            <label htmlFor="name" className="block w-32 font-medium text-gray-700">
+            <label htmlFor="name" className="block w-16 font-medium text-gray-700">
               Jméno
             </label>
             <input
               type="text"
               id="name"
               name="name"
-              className="form-input mt-1 block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
+              className={`bg-gray-50 border ${
+                validationErrors.name ? 'border-red-500' : 'border-gray-300'
+              } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5`}
               value={customerData.name}
               onChange={handleInputChange}
             />
+            {validationErrors.name && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors.name}</p>
+            )}
           </div>
           <div className="flex items-center">
-            <label htmlFor="surname" className="block w-32 font-medium text-gray-700">
+            <label htmlFor="surname" className="block w-16 font-medium text-gray-700">
               Příjmení
             </label>
             <input
               type="text"
               id="surname"
               name="surname"
-              className="form-input mt-1 block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
+              className={`bg-gray-50 border ${
+                validationErrors.surname ? 'border-red-500' : 'border-gray-300'
+              } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5`}
               value={customerData.surname}
               onChange={handleInputChange}
             />
+            {validationErrors.surname && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors.surname}</p>
+            )}
           </div>
           <div className="flex items-center">
-            <label htmlFor="email" className="block w-32 font-medium text-gray-700">
+            <label htmlFor="email" className="block w-16 font-medium text-gray-700">
               Email
             </label>
             <input
               type="email"
               id="email"
               name="email"
-              className="form-input mt-1 block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
+              className={`bg-gray-50 border ${
+                validationErrors.email ? 'border-red-500' : 'border-gray-300'
+              } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5`}
               value={customerData.email}
               onChange={handleInputChange}
             />
+            {validationErrors.email && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors.email}</p>
+            )}
           </div>
         </div>
 

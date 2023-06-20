@@ -12,11 +12,11 @@ const BookDetailsComponent = () => {
   const { bookId } = useParams();
   const [book, setBook] = useState(null);
   const userId = useContext(UserContext);
-  const [basketItems, setBasketItems] = useState([]); // Add basketItems state
+  const [basketItems, setBasketItems] = useState([]); 
 
   useEffect(() => {
     fetchBook();
-    fetchBasketItems(); // Fetch basket items on component mount
+    fetchBasketItems(); 
   }, []);
 
   const fetchBook = () => {
@@ -49,25 +49,22 @@ const BookDetailsComponent = () => {
         userId,
       };
 
-      // Check if the book is already in the basket
       const isBookInBasket = basketItems.some((item) => item.idBook === book.idBook);
 
       if (isBookInBasket) {
-        toast.error('This book is already in your basket.');
+        toast.error('Tuhle knihu již máte v košíku.');
       } else {
         BasketService.addToBasket(purchaseData)
           .then((response) => {
-            console.log('Item added to basket:', book);
-            toast.success('Successfully added to your basket.');
-            fetchBasketItems(); // Update basket items after adding a new book
+            toast.success('Úspěšně přidáno do košíku.');
+            fetchBasketItems(); 
           })
           .catch((error) => {
-            console.error('Error:', error);
-            toast.error('An error occurred.');
+            toast.error('Error.');
           });
       }
     } else {
-      toast.error('The book is out of stock.');
+      toast.error('Kniha je vyprodána.');
     }
   };
 
@@ -80,7 +77,7 @@ const BookDetailsComponent = () => {
       <div className="flex justify-center mt-10">
         {book ? (
           <div className="bg-white rounded shadow p-10 m-10">
-            <h3 className="text-lg font-bold mb-2 uppercase">{book.name}</h3>
+            <h3 className="text-lg font-bold mb-2 uppercase text-[#9dce67] ">{book.name}</h3>
             <div className="flex justify-start">
               <span className="font-bold pr-2 mb-2">Autor:</span>
               <span>
@@ -101,13 +98,13 @@ const BookDetailsComponent = () => {
             </div>
             <button
               onClick={handlePurchase}
-              className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-md"
+              className="bg-[#9dce67] transition-all hover:bg-blue-700 text-white py-2 px-4 rounded-md"
             >
-              Purchase
+              Koupit
             </button>
           </div>
         ) : (
-          <p>Loading book details...</p>
+          <p>Načítání knihy...</p>
         )}
       </div>
     </div>

@@ -6,7 +6,7 @@ export const BasketProvider = ({ children }) => {
   const [basket, setBasket] = useState([]);
 
   useEffect(() => {
-    // Retrieve basket data from browser storage on component mount
+
     const storedBasket = localStorage.getItem('basket');
     if (storedBasket) {
       setBasket(JSON.parse(storedBasket));
@@ -14,7 +14,7 @@ export const BasketProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // Update browser storage when basket changes
+
     localStorage.setItem('basket', JSON.stringify(basket));
   }, [basket]);
 
