@@ -2,9 +2,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../AuthContext';
 import { BASE_URL } from '../../config/apiConfig';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddBook = () => {
-  const { isAuthenticated, credentials } = useContext(AuthContext);
+  const { isAuthenticated, credentials, userRole } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [isbn, setIsbn] = useState('');
   const [price, setPrice] = useState(0.0);
@@ -56,8 +58,7 @@ const AddBook = () => {
       });
 
       if (response.status === 200) {
-        console.log('Book added successfully.');
-        // Reset form fields
+        toast.success("Knížka úspěšně přidána.")
         setName('');
         setIsbn('');
         setPrice('');
@@ -68,7 +69,7 @@ const AddBook = () => {
           surname: '',
         });
       } else {
-        console.log('Failed to add book.');
+        toast.error("Knížka nepřidána.")
       }
     } catch (error) {
       console.log('Error:', error);
@@ -103,7 +104,7 @@ const AddBook = () => {
       });
 
       if (response.status === 200) {
-        console.log('Author added successfully.');
+        toast.success("Autor úspěšně přidán.")
         setAuthors([...authors, response.data]);
         setAuthor({
           idAuthor: response.data.idAuthor,
@@ -114,7 +115,7 @@ const AddBook = () => {
         setNewAuthorSurname('');
         setShowAddAuthorForm(false);
       } else {
-        console.log('Failed to add author.');
+        toast.error("Autor nepřidána.")
       }
     } catch (error) {
       console.log('Error:', error);
@@ -124,11 +125,18 @@ const AddBook = () => {
   const handleCloseAddAuthor = () => {
     setShowAddAuthorForm(false);
   };
+  if (!isAuthenticated) {
+    return <div>Pro přístup na tuto stránku se musíte přihlásit jako správce.</div>;
+  }
 
+  if (userRole !== 'admin') {
+    return <div>Přístup na tuto stránku je omezen pouze na administrátory.</div>;
+  }
   return (
-    <div className="mt-8 container m-auto content-center">
-      <h2 className="text-2xl font-bold mb-4">Přidat knihu</h2>
-      <form onSubmit={handleSubmit} className="max-w-sm">
+    <div className="mt-8 container m-auto content-center items-center">
+      <ToastContainer position="bottom-right" />
+      <h2 className="text-2xl font-bold mb-4 text-center">Přidat knihu</h2>
+      <form onSubmit={handleSubmit} className="w-1/3 m-auto">
         <div className="mb-4">
           <label className="block mb-2">
             Jméno:
@@ -175,19 +183,19 @@ const AddBook = () => {
         </div>
         <div className="mb-4">
           <label className="block mb-2">
-            Author:
+            Autor:
             <select
               value={author.idAuthor}
               onChange={handleAuthorSelection}
               className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="">Select an author</option>
+              <option value="">Vyberte autora</option>
               {authors.map((author) => (
                 <option key={author.idAuthor} value={author.idAuthor}>
                   {author.name} {author.surname}
                 </option>
               ))}
-              <option value="addAuthor">Add Author</option>
+              <option value="addAuthor" className='bg-green-400'>Přidat autora</option>
             </select>
           </label>
         </div>
@@ -195,25 +203,25 @@ const AddBook = () => {
           type="submit"
           className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700"
         >
-          Add Book
+          Přidat knihu
         </button>
       </form>
 
       {showAddAuthorForm && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
           <div className="bg-white p-4 rounded-md">
-            <h2 className="text-lg font-bold mb-4">Add Author</h2>
+            <h2 className="text-lg font-bold mb-4">Přidat autora</h2>
             <button
               type="button"
               onClick={handleCloseAddAuthor}
               className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-700"
             >
-              Close
+              Zavřít
             </button>
             <form onSubmit={handleAddAuthor}>
               <div className="mb-4">
                 <label className="block mb-2">
-                  Name:
+                  Jméno:
                   <input
                     type="text"
                     value={newAuthorName}
@@ -224,7 +232,7 @@ const AddBook = () => {
               </div>
               <div className="mb-4">
                 <label className="block mb-2">
-                  Surname:
+                  Příjmení:
                   <input
                     type="text"
                     value={newAuthorSurname}
@@ -237,7 +245,7 @@ const AddBook = () => {
                 type="submit"
                 className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700"
               >
-                Add Author
+                Přidat autora
               </button>
             </form>
           </div>

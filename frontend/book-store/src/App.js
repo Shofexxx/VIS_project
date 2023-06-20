@@ -14,6 +14,7 @@ import BasketComponent from './component/BasketComponent';
 import CustomerComponent from './component/admin/CustomerComponent';
 import OrdersComponent from './component/admin/OrdersComponent';
 import { UserProvider } from './component/UserContext';
+import RemoveBook from './component/admin/RemoveBook';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/login" element={<LoginFormComponent />} />
           <Route path="/admin" element={<AdminComponent />} />
           <Route exact path="/admin/add-book" element={<AddBook />} />
+          <Route exact path="/admin/remove-book" element={<RemoveBook />} />
           <Route exact path="/admin/customers" element={<CustomerComponent />} />
           <Route exact path="/admin/orders" element={<OrdersComponent />} />
           <Route path="/books/:bookId" element={<BookDetails />} />
