@@ -41,7 +41,7 @@ const ListBookComponent = () => {
     <Link
       to={`/books/${book.idBook}`}
       key={book.idBook}
-      className="text-blue-500 hover:scale-105 transition-all"
+      className="hover:scale-105 transition-all"
     >
       <div className="bg-white rounded shadow p-4">
         
@@ -56,7 +56,7 @@ const ListBookComponent = () => {
         </div>
         <div className="flex justify-between">
           <span className="font-bold">Author:</span>
-          <span>{book.author.name}</span>
+          <span>{book.author.name} {book.author.surname}</span>
         </div>
         <div className="flex justify-between">
           <span className="font-bold">Cena:</span>
@@ -66,7 +66,6 @@ const ListBookComponent = () => {
     </Link>
   ));
 
-  // Pagination
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(bookArray.length / booksPerPage); i++) {
     pageNumbers.push(i);
@@ -87,7 +86,7 @@ const ListBookComponent = () => {
   return (
     <div className="container mx-auto py-8">
       <SearchComponent />
-      <h2 className="text-2xl font-bold mb-4">Knihy</h2>
+      <h2 className="text-2xl font-bold mb-4 text-[#9dce67] ">Knihy</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {renderBooks}
       </div>

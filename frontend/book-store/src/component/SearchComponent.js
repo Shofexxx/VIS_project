@@ -65,7 +65,7 @@ const SearchComponent = () => {
       {books.length > 0 && (
         <div className="grid grid-cols-3 gap-4">
           {books.map((book) => (
-            <Link to={`/books/${book.idBook}`} key={book.idBook} className="text-blue-500 hover:scale-105 transition-all">
+            <Link to={`/books/${book.idBook}`} key={book.idBook} className="hover:scale-105 transition-all">
               <div className="bg-white rounded shadow p-4">
                 <h3 className="text-lg font-bold mb-2 uppercase">{book.name}</h3>
                 <div className="flex justify-start">

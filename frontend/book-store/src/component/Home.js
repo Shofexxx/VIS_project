@@ -41,13 +41,13 @@ const Home = () => {
 
         <SearchComponent />
 
-        <h2 className="text-2xl font-bold mb-4 pt-20 uppercase">Top 3</h2>
+        <h2 className="text-2xl font-bold mb-4 pt-20 uppercase text-[#9dce67] ">Top 3</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {topBooks.map((book) => (
             <Link
               to={`/books/${book.idBook}`}
               key={book.idBook}
-              className="text-blue-500 hover:scale-105 transition-all"
+              className="hover:scale-105 transition-all"
             >
               <div className="bg-white rounded shadow p-4">
                 <h3 className="text-lg font-bold mb-2 uppercase">{book.name}</h3>

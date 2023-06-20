@@ -19,27 +19,25 @@ const Header = () => {
             {isAuthenticated && (
               <>
                 {userRole === 'admin' && (
-                  <Link to="/admin" className="text-blue-500 hover:text-blue-700">
-                    Administration
+                  <Link to="/admin" className="text-xl font-bold hover:text-blue-700">
+                    Administrace
                   </Link>
                 )}
                 <button
                   onClick={logout}
-                  className="text-blue-500 hover:text-blue-700 ml-4"
+                  className="text-xl font-bold hover:text-blue-700 ml-4"
                 >
-                  Logout
+                  Odhlásit se
                 </button>
               </>
             )}
             {!isAuthenticated && (
-              <Link to="/login" className="text-blue-500 hover:text-blue-700">
-                Login
+              <Link to="/login" className="text-xl font-bold hover:text-blue-700">
+                Přihlásit se
               </Link>
             )}
           </div>
-          <li>
-            <Link to="/basket">Basket</Link>
-          </li>
+            <Link to="/basket" className="text-xl font-bold hover:text-blue-700">Košík</Link>
         </nav>
       </div>
     </header>
