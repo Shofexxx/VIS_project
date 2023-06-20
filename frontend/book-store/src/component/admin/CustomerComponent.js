@@ -80,13 +80,13 @@ const CustomerComponent = () => {
             onClick={() => handleCustomerClick(customer.idCustomer)}
             className="text-blue-500 underline"
           >
-            View Orders
+            Objednávky
           </button>
           <button
             onClick={() => deleteCustomer(customer.idCustomer)}
             className="ml-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
           >
-            Delete
+            Smazat
           </button>
         </div>
       ))}
@@ -95,13 +95,13 @@ const CustomerComponent = () => {
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="fixed inset-0 bg-gray-500 opacity-50"></div>
           <div className="bg-white rounded-lg p-8 shadow-lg relative">
-            <h2 className="text-xl font-bold mb-4">Selected Customer Orders</h2>
+            <h2 className="text-xl font-bold mb-4">Vybrané objednávky zákazníků</h2>
             <p>
-              Name: {selectedCustomer.name} {selectedCustomer.surname}
+              Jméno: {selectedCustomer.name} {selectedCustomer.surname}
             </p>
             <p>Email: {selectedCustomer.email}</p>
 
-            <h3 className="text-lg font-bold mt-4">Orders:</h3>
+            <h3 className="text-lg font-bold mt-4">Objednávky:</h3>
             <ul>
               {selectedCustomer.assignedBooks.map((order) => (
                 <li key={order.idOrder}>{order.name}</li>
@@ -112,7 +112,7 @@ const CustomerComponent = () => {
               onClick={closePopup}
               className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
             >
-              Close
+              Zavřít
             </button>
           </div>
         </div>

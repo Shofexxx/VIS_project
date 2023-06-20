@@ -4,7 +4,7 @@ import { AuthContext } from '../AuthContext';
 import { BASE_URL } from '../../config/apiConfig';
 
 const OrdersComponent = () => {
-  const { isAuthenticated, credentials } = useContext(AuthContext);
+  const { isAuthenticated, credentials, userRole } = useContext(AuthContext);
   const [assignedBooks, setAssignedBooks] = useState([]);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const OrdersComponent = () => {
   }, [isAuthenticated, credentials]);
 
   const handleDelete = async (customerId) => {
-    const confirmed = window.confirm('Opravdu chcete smazat tohoto uživatele? Smažou se i jeho objednávky.');
+    const confirmed = window.confirm('Opravdu chcete smazat tuto objednávku?');
     if (!confirmed) {
       return;
     }
@@ -42,18 +42,24 @@ const OrdersComponent = () => {
     }
   };
   
+  if (!isAuthenticated) {
+    return <div>Pro přístup na tuto stránku se musíte přihlásit jako správce.</div>;
+  }
 
+  if (userRole !== 'admin') {
+    return <div>Přístup na tuto stránku je omezen pouze na administrátory.</div>;
+  }
   return (
     <div className='container mx-auto grid gap-4 grid-cols-3 mt-10'>
       {assignedBooks.map((book) => (
         <div key={book.bookId} className='border rounded shadow p-4'>
           <h3 className='text-lg font-bold mb-2'>{book.bookName}</h3>
           <p>
-            Customer: {book.customerName} {book.customerSurname} ({book.customerEmail})
+            Zákazník: {book.customerName} {book.customerSurname} ({book.customerEmail})
           </p>
 
           <button onClick={() => handleDelete(book.customerId)} className='text-red-500 underline'>
-            Delete
+            Smazat
           </button>
         </div>
       ))}
