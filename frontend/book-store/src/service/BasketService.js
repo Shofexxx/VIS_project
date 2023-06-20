@@ -2,20 +2,20 @@ import axios from "axios";
 import { BASE_URL } from "../config/apiConfig";
 
 class BasketService {
-  getBasket() {
-    return axios.get(`${BASE_URL}/api/basket`);
+  getBasketItems(userId) {
+    return axios.get(`${BASE_URL}/api/basket?userId=${userId}`);
+  }
+  
+  addToBasket(purchaseData) {
+    return axios.post(`${BASE_URL}/api/basket/add`, purchaseData);
   }
 
-  addToBasket(book) {
-    return axios.post(`${BASE_URL}/api/basket/add`, book);
-  }
+  removeFromBasket(userId, bookId) {
+    return axios.delete(`${BASE_URL}/api/basket/remove/${userId}/${bookId}`);
+  }  
 
-  removeFromBasket(bookId) {
-    return axios.delete(`${BASE_URL}/api/basket/remove/${bookId}`);
-  }
-
-  clearBasket() {
-    return axios.post(`${BASE_URL}/api/basket/clear`);
+  clearBasket(userId) {
+    return axios.post(`${BASE_URL}/api/basket/clear?userId=${userId}`);
   }
 }
 

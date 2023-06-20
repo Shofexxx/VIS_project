@@ -13,11 +13,13 @@ import { BasketProvider } from './component/BasketContext';
 import BasketComponent from './component/BasketComponent';
 import CustomerComponent from './component/admin/CustomerComponent';
 import OrdersComponent from './component/admin/OrdersComponent';
+import { UserProvider } from './component/UserContext';
 
 function App() {
   return (
     <AuthProvider>
       <BasketProvider>
+      <UserProvider>
       <BrowserRouter>
       <Header />
         <Routes>
@@ -32,6 +34,7 @@ function App() {
           <Route path="/basket" element={<BasketComponent />} />
         </Routes>
       </BrowserRouter>
+      </UserProvider>
       </BasketProvider>
     </AuthProvider>
   );

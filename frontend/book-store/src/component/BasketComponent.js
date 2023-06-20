@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import BasketService from '../service/BasketService';
-import CustomerService from '../service/CustomerService';
 import axios from 'axios';
+import { UserContext } from './UserContext';
 
 const api = axios.create({
   baseURL: 'http://localhost:8080',
@@ -15,28 +15,26 @@ const BasketComponent = () => {
     email: '',
   });
 
+  const userId = useContext(UserContext); // Retrieve userId from the UserContext
+
   useEffect(() => {
     fetchBasketItems();
-  }, []);
+  }, [userId]); // Trigger fetchBasketItems whenever userId changes
 
   const fetchBasketItems = async () => {
     try {
-      const response = await BasketService.getBasket();
+      const response = await BasketService.getBasketItems(userId); // Retrieve basket items based on userId
       setBasketItems(response.data);
     } catch (error) {
-      console.error('Chyba při načítání položek košíku:', error);
+      console.error('Error fetching basket items:', error);
     }
   };
 
   const removeFromBasket = async (bookId) => {
     try {
-      await BasketService.removeFromBasket(bookId);
+      await BasketService.removeFromBasket(userId, bookId);
       setBasketItems((prevItems) => {
-        const updatedItems = [...prevItems];
-        const index = updatedItems.findIndex((item) => item.idBook === bookId);
-        if (index !== -1) {
-          updatedItems.splice(index, 1);
-        }
+        const updatedItems = prevItems.filter((item) => item.idBook !== bookId);
         return updatedItems;
       });
     } catch (error) {
@@ -46,10 +44,10 @@ const BasketComponent = () => {
 
   const clearBasket = async () => {
     try {
-      await BasketService.clearBasket();
-      fetchBasketItems();
+      await BasketService.clearBasket(userId); // Pass userId to clearBasket method
+      setBasketItems([]);
     } catch (error) {
-      console.error('Chyba při vyprázdnění košíku:', error);
+      console.error('Error clearing the basket:', error);
     }
   };
 
@@ -90,10 +88,16 @@ const BasketComponent = () => {
         await assignBookToCustomer(customerId, item.idBook);
       }
 
-      await BasketService.clearBasket();
+      await BasketService.clearBasket(userId);
       fetchBasketItems();
+
+      setCustomerData({
+        name: '',
+        surname: '',
+        email: '',
+      });
     } catch (error) {
-      console.error('Chyba při nákupu knih:', error);
+      console.error('Error purchasing books:', error);
     }
   };
 
