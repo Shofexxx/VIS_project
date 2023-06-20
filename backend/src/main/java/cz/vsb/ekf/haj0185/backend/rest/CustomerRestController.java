@@ -79,19 +79,26 @@ public class CustomerRestController {
     }
 
     @PostMapping("/customers/{customerId}/book/{bookId}")
-    public Customer assingBookToCustomer(
-    @PathVariable int customerId,
-    @PathVariable int bookId
-    ){
+    public Customer assignBookToCustomer(
+            @PathVariable int customerId,
+            @PathVariable int bookId
+    ) {
         Customer customer = customerService.assingBookToCustomer(customerId, bookId);
 
         Book book = bookService.findById(bookId);
-        book.setQuantity(book.getQuantity() - 1);
-        book.setSales(book.getSales() + 1);
-        bookService.save(book);
+        int currentQuantity = book.getQuantity();
+
+        if (currentQuantity > 0) {
+            book.setQuantity(currentQuantity - 1);
+            book.setSales(book.getSales() + 1);
+            bookService.save(book);
+        } else {
+            throw new RuntimeException("Kniha vyprodaná.");
+        }
 
         return customer;
     }
+
 
     @DeleteMapping("/customers/{customerId}")
     public String deleteCustomer(@PathVariable int customerId){
