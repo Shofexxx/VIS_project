@@ -24,6 +24,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(configurer ->
                 configurer
                         .requestMatchers(HttpMethod.POST,"/api/books").hasRole("admin")
+                        .requestMatchers(HttpMethod.DELETE,"/api/books/*").hasRole("admin")
                         .requestMatchers(HttpMethod.POST,"/api/authors").hasRole("admin")
                         .requestMatchers(HttpMethod.GET,"/api/customers").hasRole("admin")
                         .requestMatchers(HttpMethod.DELETE,"/api/customers/*").hasRole("admin")
